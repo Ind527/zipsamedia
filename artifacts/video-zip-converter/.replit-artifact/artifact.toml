@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Video ZIP Converter"
+description = "A browser-based video ZIP tool that processes multiple selected videos locally and creates one separate ZIP archive for each video, with individual and batch download options."
+version = "1.0.0"
+id = "artifacts/video-zip-converter"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18857
+
+[services.development]
+run = "pnpm --filter @workspace/video-zip-converter run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/video-zip-converter", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/video-zip-converter/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18857"
+BASE_PATH = "/"
